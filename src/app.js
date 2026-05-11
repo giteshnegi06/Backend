@@ -66,6 +66,14 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/coupons', couponRouter);
 app.use('/api/v1/payments', paymentRouter);
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Welcome to the Nitrogen API! Server is live.'
+  });
+});
+
+
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
