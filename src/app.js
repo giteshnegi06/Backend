@@ -15,11 +15,11 @@ const app = express();
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'https://body-building-blush.vercel.app'],
   credentials: true
 }));
 app.options('*', cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173'],
+  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'https://body-building-blush.vercel.app'],
   credentials: true
 }));
 
