@@ -42,17 +42,6 @@ exports.getProduct = catchAsync(async (req, res, next) => {
 exports.createProduct = catchAsync(async (req, res, next) => {
   const body = { ...req.body };
 
-  // If category is a string name (not ObjectId), look it up or store as subCategory
-  if (body.category && typeof body.category === 'string' && body.category.length < 24) {
-    const Category = require('../models/Category');
-    let cat = await Category.findOne({ name: body.category });
-    if (!cat) {
-      cat = await Category.create({ name: body.category, slug: body.category.toLowerCase().replace(/\s+/g, '-') });
-    }
-    body.subCategory = body.category;
-    body.category = cat._id;
-  }
-
   const newProduct = await Product.create(body);
 
   res.status(201).json({
