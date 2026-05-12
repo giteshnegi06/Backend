@@ -105,3 +105,63 @@ exports.demoteFromAdmin = catchAsync(async (req, res, next) => {
     data: { user }
   });
 });
+
+exports.getCart = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).populate('cart.product');
+  
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      cart: user.cart
+    }
+  });
+});
+
+exports.updateCart = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { cart: req.body.cart },
+    { new: true, runValidators: true }
+  ).populate('cart.product');
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      cart: user.cart
+    }
+  });
+});
+
+exports.getWishlist = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id).populate('wishlist');
+  
+  if (!user) {
+    return next(new AppError('No user found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      wishlist: user.wishlist
+    }
+  });
+});
+
+exports.updateWishlist = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { wishlist: req.body.wishlist },
+    { new: true, runValidators: true }
+  ).populate('wishlist');
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      wishlist: user.wishlist
+    }
+  });
+});

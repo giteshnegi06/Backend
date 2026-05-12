@@ -15,6 +15,11 @@ router.use(authMiddleware.protect);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 
+router.get('/cart', userController.getCart);
+router.patch('/cart', userController.updateCart);
+router.get('/wishlist', userController.getWishlist);
+router.patch('/wishlist', userController.updateWishlist);
+
 // Restrict to admins
 router.use(authMiddleware.restrictTo('admin'));
 

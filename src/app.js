@@ -12,16 +12,25 @@ const globalErrorHandler = require('./middlewares/errorMiddleware');
 
 const app = express();
 
-// 1) GLOBAL MIDDLEWARES
 // Implement CORS
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'https://body-building-blush.vercel.app'],
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'https://body-building-blush.vercel.app'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow all origins in development or if no origin (like mobile apps/curl)
+    if (process.env.NODE_ENV === 'development' || !origin) {
+      return callback(null, true);
+    }
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
-}));
-app.options('*', cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'https://body-building-blush.vercel.app'],
-  credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -72,7 +81,6 @@ app.get('/', (req, res) => {
     message: 'Welcome to the Nitrogen API! Server is live.'
   });
 });
-
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

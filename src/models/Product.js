@@ -51,19 +51,16 @@ const productSchema = new mongoose.Schema({
     required: [true, 'A product must have a stock quantity'],
     default: 0
   },
+  isOutOfStock: {
+    type: Boolean,
+    default: false
+  },
   price: {
     type: Number,
     required: [true, 'A product must have a price']
   },
   discountPrice: {
-    type: Number,
-    validate: {
-      validator: function(val) {
-        // this only points to current doc on NEW document creation
-        return val < this.price;
-      },
-      message: 'Discount price ({VALUE}) should be below regular price'
-    }
+    type: Number
   },
   ratings: {
     type: Number,

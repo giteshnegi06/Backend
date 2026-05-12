@@ -26,9 +26,16 @@ async function seedAdmin() {
     // Check if admin already exists
     const existing = await usersCollection.findOne({ email: ADMIN_EMAIL });
     if (existing) {
-      console.log('⚠️  Admin already exists!');
-      console.log('   Email:', existing.email);
-      console.log('   Role:', existing.role);
+      console.log('⚠️  Admin already exists! Updating password...');
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 12);
+      await usersCollection.updateOne({ email: ADMIN_EMAIL }, { $set: { password: hashedPassword } });
+      console.log('🎉 Admin password updated successfully!');
+      
+      console.log('─────────────────────────────────');
+      console.log('   📧 Email   :', ADMIN_EMAIL);
+      console.log('   🔐 Password:', ADMIN_PASSWORD);
+      console.log('─────────────────────────────────');
+      
       await mongoose.disconnect();
       return;
     }
