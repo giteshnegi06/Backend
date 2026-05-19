@@ -15,7 +15,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 async function seedAdmin() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to MongoDB');
+    console.log(' Connected to MongoDB');
 
     const db = mongoose.connection.db;
     const usersCollection = db.collection('users');
@@ -26,14 +26,14 @@ async function seedAdmin() {
     // Check if admin already exists
     const existing = await usersCollection.findOne({ email: ADMIN_EMAIL });
     if (existing) {
-      console.log('⚠️  Admin already exists! Updating password...');
+      console.log(' Admin already exists! Updating password...');
       const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 12);
       await usersCollection.updateOne({ email: ADMIN_EMAIL }, { $set: { password: hashedPassword } });
-      console.log('🎉 Admin password updated successfully!');
+      console.log(' Admin password updated successfully!');
       
       console.log('─────────────────────────────────');
-      console.log('   📧 Email   :', ADMIN_EMAIL);
-      console.log('   🔐 Password:', ADMIN_PASSWORD);
+      console.log('   Email   :', ADMIN_EMAIL);
+      console.log('   Password:', ADMIN_PASSWORD);
       console.log('─────────────────────────────────');
       
       await mongoose.disconnect();
@@ -57,18 +57,18 @@ async function seedAdmin() {
       updatedAt: new Date()
     });
 
-    console.log('\n🎉 Admin account created successfully!');
+    console.log('\n Admin account created successfully!');
     console.log('─────────────────────────────────');
-    console.log('   📧 Email   :', ADMIN_EMAIL);
-    console.log('   🔐 Password:', ADMIN_PASSWORD);
-    console.log('   👑 Role    : admin');
+    console.log('   Email   :', ADMIN_EMAIL);
+    console.log('   Password:', ADMIN_PASSWORD);
+    console.log('   Role    : admin');
     console.log('─────────────────────────────────');
-    console.log('\n⚠️  Change your password after first login!\n');
+    console.log('\n Change your password after first login!\n');
 
     await mongoose.disconnect();
-    console.log('🔌 Disconnected from MongoDB');
+    console.log(' Disconnected from MongoDB');
   } catch (error) {
-    console.error('❌ Error seeding admin:', error.message);
+    console.error(' Error seeding admin:', error.message);
     process.exit(1);
   }
 }
