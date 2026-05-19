@@ -28,6 +28,11 @@ const productSchema = new mongoose.Schema({
   },
   flavor: [String],
   weight: [String],
+  variants: [{
+    weight: String,
+    price: Number,
+    discountPrice: Number
+  }],
   nutritionFacts: [
     {
       label: String,
@@ -81,7 +86,9 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  tags: [String]
+  tags: [String],
+  metaTitle: String,
+  metaDescription: String
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

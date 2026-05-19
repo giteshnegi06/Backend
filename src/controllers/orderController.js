@@ -106,10 +106,13 @@ exports.updateOrderStatus = catchAsync(async (req, res, next) => {
     return next(new AppError('No order found with that ID', 404));
   }
 
-  order.orderStatus = req.body.status;
+  if (req.body.status) order.orderStatus = req.body.status;
+  if (req.body.orderStatus) order.orderStatus = req.body.orderStatus;
+  if (req.body.paymentStatus) order.paymentStatus = req.body.paymentStatus;
+  if (req.body.trackingNumber) order.trackingNumber = req.body.trackingNumber;
   
-  if (req.body.status === 'Delivered') {
-    order.deliveredAt = Date.now();
+  if (order.orderStatus === 'Delivered') {
+    if (!order.deliveredAt) order.deliveredAt = Date.now();
     order.paymentStatus = 'Completed';
   }
 
